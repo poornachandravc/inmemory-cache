@@ -1,0 +1,100 @@
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: hazelcast
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: hazelcast
+#  template:
+#    metadata:
+#      labels:
+#        app: hazelcast
+#    spec:
+#      containers:
+#        - name: hazelcast
+#          image: hazelcast/hazelcast:latest
+#          ports:
+#            - containerPort: 5701
+#          env:
+#            - name: HAZELCAST_KUBERNETES_ENABLED
+#              value: "true"
+#            - name: JAVA_OPTS
+#              value: "-Dhazelcast.config=/opt/hazelcast/hazelcast.yaml"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hazelcast-service
+spec:
+  selector:
+    app: cachemanager-service
+#    app: hazelcast
+  ports:
+    - name: hazelcast
+      port: 5701
+  type: LoadBalancer
+
+---
+
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: hazelcast
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: hazelcast
+#  template:
+#    metadata:
+#      labels:
+#        app: hazelcast
+#    spec:
+#      containers:
+#        - name: hazelcast
+#          image: hazelcast/hazelcast:latest
+#          ports:
+#            - containerPort: 5701
+##          volumeMounts:
+##            - name: hazelcast-config
+##              mountPath: /opt/hazelcast
+##      volumes:
+##        - name: hazelcast-config
+##          configMap:
+##            name: hazelcast-config-map
+#---
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: hazelcast-config-map
+#data:
+#  hazelcast.yaml: |
+#    hazelcast:
+#      network:
+#        join:
+#          multicast:
+#            enabled: false
+#          kubernetes:
+#            enabled: true
+#            namespace: default
+#            service-name: hazelcast-service
+#      map:
+#        sampleCache:
+#          backup-count: 1
+#          time-to-live-seconds: 3600
+#
+#---
+#
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: hazelcast-service
+#spec:
+#  ports:
+#    - port: 5701
+#  selector:
+#    app: hazelcast

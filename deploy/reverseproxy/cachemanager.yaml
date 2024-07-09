@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cachemanager
+  labels:
+    app: cachemanager
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cachemanager
+  template:
+    metadata:
+      labels:
+        app: cachemanager
+    spec:
+      containers:
+        - name: cachemanager
+          image: poornachandravc/cachemanager:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: multicast
+              containerPort: 5701
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgresql-service-name:5432/sampledb
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: postgrespassword
+            - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+              value: org.postgresql.Driver
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresql-storage  # Ensure this matches the volume name defined in the PersistentVolumeClaim
+      volumes:
+        - name: postgresql-storage
+          persistentVolumeClaim:
+            claimName: postgresql-pvc  # Ensure this matches the PersistentVolumeClaim name for PostgreSQL
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cachemanager
+  labels:
+    app: cachemanager
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      nodePort: 32000
+  selector:
+    app: cachemanager
+  type: NodePort
+---
+
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: cachemanager-service
+#spec:
+#  type: LoadBalancer
+#  ports:
+#    - port: 80
+#      targetPort: 8080
+#  selector:
+#    app: cachemanager

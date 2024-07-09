@@ -1,0 +1,13 @@
+hazelcast:
+  network:
+    join:
+      multicast:
+        enabled: false
+      kubernetes:
+        enabled: true
+        namespace: default
+        service-name: hazelcast-service
+  map:
+    sampleCache:
+      backup-count: 1
+      time-to-live-seconds: 3600
