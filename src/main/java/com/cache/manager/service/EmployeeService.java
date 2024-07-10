@@ -103,6 +103,7 @@ public class EmployeeService {
     public Employee add(Employee e) {
         e = repository.save(e);
         map.put(e.getId(), e);
+        logger.info("---------- Added data into repository with id "+ e.getId());
         return e;
     }
 

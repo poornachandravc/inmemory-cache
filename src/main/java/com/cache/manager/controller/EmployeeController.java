@@ -1,19 +1,15 @@
 package com.cache.manager.controller;
 
+import com.cache.manager.entity.Employee;
+import com.cache.manager.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.cache.manager.entity.Employee;
-import com.cache.manager.service.EmployeeService;
-
 @RestController
+@RequestMapping("/api/v1")
 public class EmployeeController {
 
     private Logger logger = Logger.getLogger(EmployeeController.class.getName());

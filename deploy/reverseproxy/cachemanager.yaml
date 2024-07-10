@@ -5,7 +5,7 @@ metadata:
   labels:
     app: cachemanager
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: cachemanager
@@ -25,7 +25,7 @@ spec:
               containerPort: 5701
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgresql-service-name:5432/sampledb
+              value: jdbc:postgresql://postgresql-service:5432/sampledb
             - name: SPRING_DATASOURCE_USERNAME
               value: postgres
             - name: SPRING_DATASOURCE_PASSWORD

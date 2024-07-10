@@ -44,12 +44,13 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>-->
+
 		<!-- PostgreSQL JDBC Driver -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.2.24</version> <!-- Replace with the latest version -->
-		</dependency>
+			<version>42.2.24</version> &lt;!&ndash; Replace with the latest version &ndash;&gt;
+		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -89,6 +90,13 @@
 			<version>2.2.3</version>
 		</dependency>
 
+		<!-- Swagger API -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -99,5 +107,40 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
+	<profiles>
+		<!-- Profile for PostgreSQL (default) -->
+		<profile>
+			<id>postgresql</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<spring.profiles.active>postgresql</spring.profiles.active>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.postgresql</groupId>
+					<artifactId>postgresql</artifactId>
+					<version>42.2.24</version>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<!-- Profile for H2 (local) -->
+		<profile>
+			<id>h2</id>
+			<properties>
+				<spring.profiles.active>h2</spring.profiles.active>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>com.h2database</groupId>
+					<artifactId>h2</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
 </project>
